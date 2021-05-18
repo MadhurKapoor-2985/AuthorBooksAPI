@@ -1,4 +1,5 @@
 ﻿using AuthorBooksAPI.Model;
+using AuthorBooksAPI.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,15 +13,31 @@ namespace AuthorBooksAPI.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
+        private readonly IAuthorRepository _repository;
+
+        public AuthorsController(IAuthorRepository repository)
+        {
+            _repository = repository;
+        }
+
         [HttpGet]
         public IActionResult GetAuthors()
         {
-            var authors = new List<Author> {
-                new Author { FirstName = "Madhur", LastName = "Kapoor", DateOfBirth = Convert.ToDateTime("01/01/1985"), Gender = "M", Id = 1},
-                new Author { FirstName = "S", LastName = "Kapoor", DateOfBirth = Convert.ToDateTime("06/06/1990"), Gender = "F", Id = 2},
-            };
-
+            var authors = _repository.GetAllAuthors();
             return Ok(authors);
+        }
+
+        [HttpGet("{authorId}")]
+        public IActionResult GetAuthorById(int authorId)
+        {
+            var author = _repository.GetAuthorById(authorId);
+
+            if(author == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(author);
         }
     }
 }
