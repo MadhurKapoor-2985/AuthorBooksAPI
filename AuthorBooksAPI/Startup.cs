@@ -29,7 +29,9 @@ namespace AuthorBooksAPI
         {
             services.AddDbContext<AuthorBooksDbContext>(opt => opt.UseSqlServer
             (Configuration.GetConnectionString("AuthorBooksConnectionString")));
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .AddXmlDataContractSerializerFormatters();
             services.AddScoped<IAuthorRepository, AuthorSqlRepository>();
         }
 

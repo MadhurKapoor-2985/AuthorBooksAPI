@@ -13,7 +13,7 @@ namespace AuthorBooksAPI.Model
         public int Id { get; set; }
         [Required]
         [MaxLength(400)]
-        public int Title { get; set; }
+        public string Title { get; set; }
         [Required]
         [MaxLength(100)]
         public string ISBN { get; set; }

@@ -1,4 +1,5 @@
 ﻿using AuthorBooksAPI.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace AuthorBooksAPI.Repository
 
         public IEnumerable<Author> GetAllAuthors()
         {
-            return _context.Authors.ToList();
+            return _context.Authors.Include("Books").ToList();
         }
 
         public Author GetAuthorById(int authorId)
