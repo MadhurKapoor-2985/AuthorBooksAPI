@@ -1,5 +1,7 @@
-﻿using AuthorBooksAPI.Model;
+﻿using AuthorBooksAPI.Dtos;
+using AuthorBooksAPI.Model;
 using AuthorBooksAPI.Repository;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,17 +16,19 @@ namespace AuthorBooksAPI.Controllers
     public class AuthorsController : ControllerBase
     {
         private readonly IAuthorRepository _repository;
+        private readonly IMapper _mapper;
 
-        public AuthorsController(IAuthorRepository repository)
+        public AuthorsController(IAuthorRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetAuthors()
         {
             var authors = _repository.GetAllAuthors();
-            return Ok(authors);
+            return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authors));
         }
 
         [HttpGet("{authorId}")]
@@ -37,7 +41,7 @@ namespace AuthorBooksAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(author);
+            return Ok(_mapper.Map<AuthorDto>(author));
         }
     }
 }
