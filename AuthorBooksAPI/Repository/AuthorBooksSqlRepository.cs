@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AuthorBooksAPI.Repository
 {
-    public class AuthorSqlRepository : IAuthorRepository
+    public class AuthorBooksSqlRepository : IAuthorBooksRepository
     {
         private readonly AuthorBooksDbContext _context;
 
-        public AuthorSqlRepository(AuthorBooksDbContext context)
+        public AuthorBooksSqlRepository(AuthorBooksDbContext context)
         {
             _context = context;
         }
@@ -21,9 +21,19 @@ namespace AuthorBooksAPI.Repository
             return _context.Authors.Include("Books").ToList();
         }
 
+        public IEnumerable<Book> GetAllBooks(int authorId)
+        {
+            return _context.Books.Where(x => x.AuthorId == authorId).ToList();
+        }
+
         public Author GetAuthorById(int authorId)
         {
             return _context.Authors.FirstOrDefault(x => x.Id == authorId);
+        }
+
+        public Book GetBookById(int authorId, int bookId)
+        {
+            return _context.Books.FirstOrDefault(x => x.AuthorId == authorId && x.Id == bookId);
         }
 
         public bool SaveChanges()

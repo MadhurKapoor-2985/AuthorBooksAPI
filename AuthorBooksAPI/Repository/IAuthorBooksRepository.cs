@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace AuthorBooksAPI.Repository
 {
-    public interface IAuthorRepository
+    public interface IAuthorBooksRepository
     {
         bool SaveChanges();
         IEnumerable<Author> GetAllAuthors();
         Author GetAuthorById(int authorId);
+
+        IEnumerable<Book> GetAllBooks(int authorId);
+
+        Book GetBookById(int authorId, int bookId);
 
        
     }

@@ -15,10 +15,10 @@ namespace AuthorBooksAPI.Controllers
     [ApiController]
     public class AuthorsController : ControllerBase
     {
-        private readonly IAuthorRepository _repository;
+        private readonly IAuthorBooksRepository _repository;
         private readonly IMapper _mapper;
 
-        public AuthorsController(IAuthorRepository repository, IMapper mapper)
+        public AuthorsController(IAuthorBooksRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
