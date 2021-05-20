@@ -5,14 +5,11 @@ using System.Threading.Tasks;
 
 namespace AuthorBooksAPI.Dtos
 {
-    public class BookDto
+    public class BookCreateDto
     {
         public string Title { get; set; }
         public string ISBN { get; set; }
         public string Category { get; set; }
         public DateTime? DatePublished { get; set; }
-        public int AuthorId { get; set; }
-
-        public int Id { get; set; }
     }
 }

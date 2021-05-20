@@ -16,6 +16,17 @@ namespace AuthorBooksAPI.Repository
             _context = context;
         }
 
+        public void AddAuthor(Author author)
+        {
+            _context.Authors.Add(author);
+        }
+
+        public void AddBookByAuthor(int authorId, Book book)
+        {
+            book.AuthorId = authorId;
+            _context.Books.Add(book);
+        }
+
         public IEnumerable<Author> GetAllAuthors()
         {
             return _context.Authors.Include("Books").ToList();

@@ -1,4 +1,5 @@
 ﻿using AuthorBooksAPI.Dtos;
+using AuthorBooksAPI.Model;
 using AuthorBooksAPI.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -23,16 +24,26 @@ namespace AuthorBooksAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetBooks(int authorId)
+        public IActionResult GetBooksForAuthor(int authorId)
         {
+            if(_repository.GetAuthorById(authorId) == null)
+            {
+                return NotFound();
+            }
+
             var books = _repository.GetAllBooks(authorId);
 
             return Ok(_mapper.Map<IEnumerable<BookDto>>(books));
         }
 
-        [HttpGet("{bookId}")]
+        [HttpGet("{bookId}", Name ="GetBookById")]
         public IActionResult GetBookById(int authorId, int bookId)
         {
+            if (_repository.GetAuthorById(authorId) == null)
+            {
+                return NotFound();
+            }
+
             var book = _repository.GetBookById(authorId, bookId);
 
             if(book == null)
@@ -41,6 +52,23 @@ namespace AuthorBooksAPI.Controllers
             }
 
             return Ok(_mapper.Map<BookDto>(book));
+        }
+
+        public IActionResult AddBookByAuthor(int authorId, BookCreateDto bookCreateDto)
+        {
+            if(_repository.GetAuthorById(authorId) == null)
+            {
+                return NotFound();
+            }
+
+            var book = _mapper.Map<Book>(bookCreateDto);
+
+            _repository.AddBookByAuthor(authorId, book);
+            _repository.SaveChanges();
+
+            var bookDto = _mapper.Map<BookDto>(book);
+
+            return CreatedAtRoute(nameof(GetBookById), new { authorId = bookDto.AuthorId, bookId = bookDto.Id }, bookDto);
         }
     }
 }

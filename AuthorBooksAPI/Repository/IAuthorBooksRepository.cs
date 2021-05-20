@@ -12,9 +12,13 @@ namespace AuthorBooksAPI.Repository
         IEnumerable<Author> GetAllAuthors();
         Author GetAuthorById(int authorId);
 
+        void AddBookByAuthor(int authorId, Book book);
+
         IEnumerable<Book> GetAllBooks(int authorId);
 
         Book GetBookById(int authorId, int bookId);
+
+        void AddAuthor(Author author);
 
        
     }

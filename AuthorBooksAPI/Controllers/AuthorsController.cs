@@ -31,7 +31,18 @@ namespace AuthorBooksAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authors));
         }
 
-        [HttpGet("{authorId}")]
+        public IActionResult AddAuthor(AuthorCreateDto authorCreateDto)
+        {
+            var author = _mapper.Map<Author>(authorCreateDto);
+            _repository.AddAuthor(author);
+            _repository.SaveChanges();
+
+            var authorDto = _mapper.Map<AuthorDto>(author);
+
+            return CreatedAtRoute(nameof(GetAuthorById), new { authorId = authorDto.Id }, authorDto);
+        }
+
+        [HttpGet("{authorId}", Name ="GetAuthorById")]
         public IActionResult GetAuthorById(int authorId)
         {
             var author = _repository.GetAuthorById(authorId);

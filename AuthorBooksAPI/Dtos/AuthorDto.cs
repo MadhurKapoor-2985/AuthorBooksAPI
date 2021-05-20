@@ -11,6 +11,8 @@ namespace AuthorBooksAPI.Dtos
         public string Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
 
+        public int Id { get; set; }
+
 
     }
 }
